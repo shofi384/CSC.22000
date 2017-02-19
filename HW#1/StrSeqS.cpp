@@ -1,25 +1,33 @@
+//	Shofiqur Rahman
+//	shofi384@gmail.com
+
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 int* MakeArray(int n);
 int* MakeUnqArray(int n);
 bool contains(int a[], int i, int r);
-int StrSeqS(int a[], int n, int key);
+int StrSeqS(int a[], int n, int key, int& FoundKey);
 
 main()
 {
 	int* key=MakeArray(1000);
+	size_t n;
+	cout<<"Give me the number of array elements you want to search from: "<<endl;
+	cin>>n;
+	int* a =MakeUnqArray(n);
+	int avg;
+	int op=0;
+	int FoundKey=0;
 
-	int* a =MakeUnqArray(1000000);
-	int avg,op=0;
-	for(int i=1; i<=101; i++)
+	for(int i=0; i<1000; i++)
 	{
-		op+=StrSeqS(a, 1000000, key[i]);
+		op+=StrSeqS(a, n, key[i], FoundKey);
 	}
-	avg=op/101;
-	cout<<"Average number of operation for 10^2 is "<<avg<<endl;
+	avg=op/1000;
+	cout<<"\nTotal number of key found is "<<FoundKey
+		<<"\nAnd average number of operations is "<<avg<<endl;
 }
 
 	int* MakeArray(int n)
@@ -29,7 +37,7 @@ main()
 		<<" values!\nNow the array is being filled with unique integers. . ."<<endl;
 		for(int i=0; i<n; i++)
 		{
-			a[i]= rand()%10003;
+			a[i]= rand()%n;
 			cout<<"\n"<<a[i];
 		}
 		cout<<endl;
@@ -41,10 +49,10 @@ main()
 		int* a=new int[n];
 		for(int i=0; i<n; i++)
 		{
-			int r = rand()%1000003;
+			int r = rand()%(n+1);
 			while(contains(a,i,r))
 			{
-				r = rand()%1000003;
+				r = rand()%(n+1);
 			}
 			a[i] = r;
 			cout<<"\n"<<a[i];
@@ -63,24 +71,27 @@ main()
 		return false;
 	}
 
-	int StrSeqS(int a[], int n, int key)
+	int StrSeqS(int a[], int n, int key, int& FoundKey)
 	{
-		int i=0, count=0;
+		int i=0;
+		int OpCount=0;
 		while(i< n) // n comparison
 		{
-			count++;
+			OpCount++;
 			if (a[i]==key) // n comparisons
 			{
-				count++;
-				cout<<"Total count of operation is "<<count<<endl;
-				return count;
+				OpCount++;
+				FoundKey++;
+				cout<<"Total count of operation is "
+					<<OpCount<<endl;
+				return OpCount;
 			}
 			else
 			{
-				i= i+1; // n assignment
-				count+=2;
+				i++; // n assignment
+				OpCount++;
 			}
 		}
-		cout<<"Total count of operation is "<<count<<endl;
-		return count;
+		cout<<"Total count of operation is "<<OpCount<<endl;
+		return OpCount;
 	}
