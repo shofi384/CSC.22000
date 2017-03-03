@@ -47,13 +47,14 @@ main()
 
 	int* MakeUnqArray(int n)
 	{
+		int r;
 		int* a=new int[n];
 		for(int i=0; i<n; i++)
 		{
-			int r = rand()%(n+1);
+			r = rand()*rand();
 			while(contains(a,i,r))
 			{
-				r = rand()%(n+1);
+				r = rand()*rand();
 			}
 			a[i] = r;
 			cout<<"\n"<<a[i];

@@ -8,7 +8,7 @@ using namespace std;
 int* MakeArray(int n);
 int* MakeUnqArray(int n);
 bool contains(int a[], int i, int r);
-int StrSeqS(int a[], int n, int key, int& FoundKey);
+void StrSeqS(int* a, int n, int* key);
 
 main()
 {
@@ -17,17 +17,7 @@ main()
 	cout<<"Give me the number of array elements you want to search from: "<<endl;
 	cin>>n;
 	int* a =MakeUnqArray(n);
-	int avg;
-	int op=0;
-	int FoundKey=0;
-
-	for(int i=0; i<1000; i++)
-	{
-		op+=StrSeqS(a, n, key[i], FoundKey);
-	}
-	avg=op/1000;
-	cout<<"\nTotal number of key found is "<<FoundKey
-		<<"\nAnd average number of operations is "<<avg<<endl;
+	StrSeqS(a, n, key);
 }
 
 	int* MakeArray(int n)
@@ -71,27 +61,31 @@ main()
 		return false;
 	}
 
-	int StrSeqS(int a[], int n, int key, int& FoundKey)
+	void StrSeqS(int* a, int n, int* key)
 	{
-		int i=0;
-		int OpCount=0;
-		while(i< n) // n comparison
+		int op=0,found=0, avg;
+		bool nf = true;
+		int j=0;
+		for(int i=0; i<1000; i++)
 		{
-			OpCount++;
-			if (a[i]==key) // n comparisons
+			op+=3;
+			while(j< n && nf) // n comparison
+		{
+			op+=2;
+			if (key[i]==a[j]) // n comparisons
 			{
-				OpCount++;
-				FoundKey++;
-				cout<<"Total count of operation is "
-					<<OpCount<<endl;
-				return OpCount;
+				nf = false;
+				found++;
+				cout<<"Total count of operation is "<<op<<endl;
 			}
 			else
-			{
-				i++; // n assignment
-				OpCount++;
+				{
+					j++; // n assignment
+					op++;
+				}
 			}
 		}
-		cout<<"Total count of operation is "<<OpCount<<endl;
-		return OpCount;
+		avg = op/1000;
+		cout<<"\nTotal number of key found is "<<found
+		<<"\nAnd average number of operations is "<<avg<<endl;
 	}
