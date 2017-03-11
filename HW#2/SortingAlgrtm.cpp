@@ -238,24 +238,24 @@ void RepeatKQuick(int n)
 	cout<<"The average of Quick sorting with Insertion Sort "<<n<<" elements 10 times: \n   Comparison: "<<CompCount/10<<"\n   Swapping: "<<SwapCount/10<<endl;
 }
 
-void MinHeapify(int a[], int i, int n, int& CompCount, int& SwapCount)
+void MaxHeapify(int a[], int i, int n, int& CompCount, int& SwapCount)
 {
-	int l = 2*i, r = 2*i+1, smaller;
+	int l = 2*i, r = 2*i+1, larger;
 	CompCount++;
-	if(l<n && a[l]<a[i])
-		smaller=l;
+	if(l<n && a[l]>a[i])
+		larger=l;
 	else
-		smaller=i;
+		larger=i;
 	CompCount++;
-	if(r<n && a[r]<a[i])
-		smaller=r;
+	if(r<n && a[r]>a[i])
+		larger=r;
 	CompCount++;
-	if(i!=smaller)
+	if(i!=larger)
 	{
 		SwapCount++;
-		swap(a[i],a[smaller]);
+		swap(a[i],a[larger]);
+		MaxHeapify(a, larger, n, CompCount, SwapCount);
 	}
-	MinHeapify(a, smaller, n, CompCount, SwapCount);
 }
 
 void heap(int a[], int n, int& CompCount, int& SwapCount)
@@ -263,7 +263,14 @@ void heap(int a[], int n, int& CompCount, int& SwapCount)
 	for(int i=n/2; i>=1; i--)
 	{
 		CompCount++;
-		MinHeapify(a, i, n, CompCount, SwapCount);
+		MaxHeapify(a, i, n, CompCount, SwapCount);
+	}
+	for(int i=n-1; i>1; i--)
+	{
+		CompCount++;
+		swap(a[1], a[i]);
+		n=n-1;
+		MaxHeapify(a, i, n, CompCount, SwapCount);
 	}
 }
 
