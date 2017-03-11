@@ -19,11 +19,6 @@ int* MakeRandArray(int n)
 		index = rand()%n;
 		swap(a[j],a[index]);
 	}
-	for(int i=0; i<n; i++)
-		{
-			cout<<a[i]<<" ";
-		}
-		cout<<endl;
 	return a;
 }
 
@@ -240,14 +235,17 @@ void RepeatKQuick(int n)
 
 void MaxHeapify(int a[], int i, int n, int& CompCount, int& SwapCount)
 {
-	int l = 2*i, r = 2*i+1, larger;
+	int l = 2*i;
+	int r = 2*i+1;
+
+	int larger;
 	CompCount++;
 	if(l<n && a[l]>a[i])
 		larger=l;
 	else
 		larger=i;
 	CompCount++;
-	if(r<n && a[r]>a[i])
+	if(r<n && a[r]>a[larger])
 		larger=r;
 	CompCount++;
 	if(i!=larger)
@@ -258,19 +256,25 @@ void MaxHeapify(int a[], int i, int n, int& CompCount, int& SwapCount)
 	}
 }
 
-void heap(int a[], int n, int& CompCount, int& SwapCount)
+void BuildHeap(int a[], int n, int& CompCount, int& SwapCount)
 {
-	for(int i=n/2; i>=1; i--)
+	for(int i=n/2+1; i>=0; i--)
 	{
 		CompCount++;
 		MaxHeapify(a, i, n, CompCount, SwapCount);
 	}
-	for(int i=n-1; i>1; i--)
+}
+
+void heap(int a[], int n, int& CompCount, int& SwapCount)
+{
+	BuildHeap(a, n, CompCount, SwapCount);
+	int c = n;
+	for(int i=c-1; i>0; i--)
 	{
 		CompCount++;
-		swap(a[1], a[i]);
+		swap(a[0], a[i]);
 		n=n-1;
-		MaxHeapify(a, i, n, CompCount, SwapCount);
+		MaxHeapify(a, 0, n, CompCount, SwapCount);
 	}
 }
 
@@ -281,18 +285,13 @@ void RepeatHeap(int n)
 	{
 		int* a = MakeRandArray(n);
 		heap(a, n, CompCount, SwapCount);
-	for(int i=0; i<n; i++)
-		{
-			cout<<a[i]<<" ";
-		}
-		cout<<endl;
 	}
 	cout<<"The average of Heap sorting "<<n<<" elements 10 times: \n   Comparison: "<<CompCount/10<<"\n   Swapping: "<<SwapCount/10<<endl;
 }
 
 main()
 {
-	/*int* seq2;
+	int* seq2;
 	int* seq4;
 	int* seq6;
 	seq2 = MakeSeqArray(100);
@@ -320,12 +319,10 @@ main()
 	RepeatKQuick(10000);
 	RepeatHeap(10000);
 
-	RepeatStrInsSort1000000);
+	RepeatStrInsSort(1000000);
 	RepeatMerge(1000000);
 	RepeatKMerge(1000000);
 	RepeatQuick(1000000);
 	RepeatKQuick(1000000);
-	RepeatHeap(1000000);*/
-
-	RepeatHeap(100);
+	RepeatHeap(1000000);
 }
