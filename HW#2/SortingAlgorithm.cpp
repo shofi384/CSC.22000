@@ -44,8 +44,7 @@ int* MakeRevSeqArray(int n)
 
 void StrInsSort(int a[], int p, int r, int& CompCount, int& SwapCount)
 {
-	int n = r-p+1;
-	for(int i=p+1; i<n; i++)
+	for(int i=p+1; i<=r; i++)
 	{
 		CompCount++;
 		while(i>p && a[i]<a[i-1])
@@ -128,25 +127,24 @@ void RepeatMerge(int n)
 		int* a = MakeRandArray(n);
 		MergeSort(a, 0, n-1, CompCount);
 	}
-	cout<<"The average of Merge sorting "<<n<<" elements 10 times: \n   Comparison: "<<CompCount/10<<endl;
+	cout<<"The average of Merge sorting "<<n<<" elements 10 times: \n   Comparison: "<<CompCount/10<<"\n   Swapping: "<<SwapCount/10<<endl;
 }
 
 void KMergeSort(int a[], int p, int r, int& CompCount, int& SwapCount)
 {
 	int n = r-p+1;
 	int q;
-	int k=4;
 	CompCount++;
-	if(n<=k)
-	{
-		StrInsSort(a, p, r, CompCount, SwapCount);
-	}
-	if(n>1)
+	if(n>8)
 	{
 		q=(p+r)/2;
 		KMergeSort(a,p,q, CompCount, SwapCount);
 		KMergeSort(a,q+1,r, CompCount, SwapCount);
 		merge(a,p,q,r, CompCount);
+	}
+	else
+	{
+		StrInsSort(a, p, r, CompCount, SwapCount);
 	}
 }
 
