@@ -121,7 +121,7 @@ void MergeSort(int a[], int p, int r, int& CompCount)
 
 void RepeatMerge(int n)
 {
-	int CompCount=0;
+	int CompCount=0, SwapCount=0;
 	for(int i =0; i<10; i++)
 	{
 		int* a = MakeRandArray(n);
