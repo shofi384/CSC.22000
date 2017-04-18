@@ -20,4 +20,15 @@ main()
 		swap(a[j],a[index]);
 	}
 	cout<<"\nArray with "<<elements<<" elements has been built!"<<endl;
+	for(int j=0; j<elements; j++)
+	{
+		cout<<a[j]<<" ";
+	}
+	cout<<endl;
+	int b[elements];
+	for(int j=0; j<elements; j++)
+	{
+		b[j]=a[j];
+		cout<<b[j]<<" ";
+	}
 }
