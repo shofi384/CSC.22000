@@ -1,6 +1,6 @@
 /*	Shofiqur Rahman
 		shofi384@gmail.com
-		Shortest path algorithm for a directed graph g*/
+		Shortest path algorithm for an undirected graph g*/
 
 #include <iostream>
 #include <vector>
@@ -16,6 +16,7 @@ void read_file(ifstream& inFile, int adjMax[][12])
 	{
 		inFile >>i >>j >>weight;
 		adjMax[i][j] = weight;
+		adjMax[j][i] = weight;
 	}
 }
 
@@ -111,7 +112,7 @@ int main()
 	BFS(adjMax, g, sizeof(adjMax[0])/4, 0);
 
 	int s=0, e=11;
-	cout<<"\t The path from "<<s<<" to "<<e<<" on a directed graph is: ";
+	cout<<"\t The path from "<<s<<" to "<<e<<" on an undirected graph is: ";
 	printPath(g,s,e);
 	cout<<"\n\t\tAnd the distance is: "<<g[e].depth<<endl;
 
