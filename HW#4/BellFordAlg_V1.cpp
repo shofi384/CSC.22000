@@ -1,6 +1,6 @@
 /*	Shofiqur Rahman
 		shofi384@gmail.com
-		Bellman Ford Algorithm for a directed graph g*/
+		Bellman Ford Algorithm for an undirected graph*/
 
 #include <iostream>
 #include <vector>
@@ -18,6 +18,7 @@ void read_file(ifstream& inFile, int adjMax[][12])
 	{
 		inFile >>i >>j >>weight;
 		adjMax[i][j] = weight;
+		adjMax[j][i] = weight;
 	}
 }
 
@@ -109,9 +110,9 @@ int main()
 	BellFord(adjMax, g, sizeof(adjMax[0])/4, 0);
 
 	int s=0, e=11;
-	cout<<"\t The path from "<<s<<" to "<<e<<" on a directed graph is: ";
+	cout<<"\tThe path from "<<s<<" to "<<e<<" on an undirected graph is: ";
 	printPath(g,s,e);
-	cout<<"\n\t\tAnd the distance is: "<<g[e].depth<<endl;
+	cout<<"\t\tAnd the distance is: "<<g[e].depth<<endl;
 
 	return 0;
 }

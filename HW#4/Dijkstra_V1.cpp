@@ -1,6 +1,6 @@
 /*	Shofiqur Rahman
 		shofi384@gmail.com
-		Bellman Ford Algorithm for a directed graph*/
+		Dijkstra's Algorithm for an undirected graph*/
 
 #include <iostream>
 #include <vector>
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-struct groupData{int depth, parent;};
+struct groupData{int index, depth, parent;};
 
 void read_file(ifstream& inFile, int adjMax[][12])
 {
@@ -18,19 +18,41 @@ void read_file(ifstream& inFile, int adjMax[][12])
 	{
 		inFile >>i >>j >>weight;
 		adjMax[i][j] = weight;
+		adjMax[j][i] = weight;
 	}
 }
 
-void singleSource(vector <groupData>& g, int n, int s)
+void singleSource(vector <groupData>& Q, int n, int s)
 {
 	for(int i=0; i<n; i++)
 	{
 		groupData v;
+		v.index = i;
 		v.depth = 1000000000;
-		v.parent = -1000000000;
-		g.push_back(v);
+		Q.push_back(v);
 	}
-	g[s].depth = 0;
+	Q[s].depth = 0;
+}
+
+groupData extractMin(vector <groupData>& q)
+{
+	int index=0, min=q[index].depth;
+
+	for(int i =1; i<q.size(); i++)
+	{
+		if(min>q[i].depth)
+		{
+			index=i;
+			min=q[index].depth;
+		}
+	}
+	groupData z = q[index];
+	for(int j=index; j<(q.size()-1); j++)
+	{
+		q[j]=q[j+1];
+	}
+	q.pop_back();
+	return z;
 }
 
 void relax(groupData& u, groupData& v, int w, int i)
@@ -42,33 +64,19 @@ void relax(groupData& u, groupData& v, int w, int i)
 	}
 }
 
-bool BellFord( int adjMax[][12], vector <groupData>& g, int n, int s)
+void dijkstra(int adjMax[][12], vector <groupData>& g, int n, int s)
 {
-	singleSource(g, n, s);
-	for(int k=1; k<g.size(); k++)
-	{
-		for(int i=0;i<g.size(); i++)
-		{
-			for(int j=0; j<12; j++)
-			{
-				if(adjMax[i][j]!=-1)
-				{
-					relax(g[i], g[j], adjMax[i][j], i);
-				}
-			}
-		}
-	}
+	vector <groupData> Q;
+	singleSource(Q, n, s);
 
-	for(int i=0;i<g.size(); i++)
+	while(Q.size()!=0)
 	{
-		for(int j=0; j<12; j++)
-		{
-			if(adjMax[i][j]!=-1)
-				if(g[j].depth>g[i].depth+adjMax[i][j])
-					return false;
-		}
+		groupData z = extractMin(Q);
+		g.push_back(z);
+		for(int i=0; i<Q.size(); i++)
+			if(adjMax[z.index][Q[i].index] != -1)
+				relax(z, Q[i], adjMax[z.index][Q[i].index], z.index);
 	}
-	return true;
 }
 
 void printPath(vector <groupData> g, int s, int e)
@@ -106,10 +114,10 @@ int main()
 	inFile.close(); // Close the file
 
 	vector <groupData> g;
-	BellFord(adjMax, g, sizeof(adjMax[0])/4, 0);
+	dijkstra(adjMax, g, sizeof(adjMax[0])/4, 0);
 
 	int s=0, e=11;
-	cout<<"\t The path from "<<s<<" to "<<e<<" on a directed graph is: ";
+	cout<<"\tThe path from "<<s<<" to "<<e<<" on an undirected graph is: ";
 	printPath(g,s,e);
 	cout<<"\n\t\tAnd the distance is: "<<g[e].depth<<endl;
 
